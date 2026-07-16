@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Athos × Qualified — On the Spara Question</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.22.5/babel.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:       #FFFFFF;
+    --bg-tint:  #EAF4FC;
+    --border:   #DCE9F7;
+    --navy:     #14284B;
+    --blue:     #1E56C6;
+    --blue-bg:  rgba(30,86,198,0.07);
+    --blue-border: rgba(30,86,198,0.20);
+    --cyan:     #29ABE2;
+    --cyan-bg:  rgba(41,171,226,0.10);
+    --teal:     #3DBFA0;
+    --body:     #445070;
+    --dim:      #8B96AF;
+    --shadow:   0 10px 30px -12px rgba(20,40,75,0.14);
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--navy); -webkit-font-smoothing: antialiased; }
+  .display { font-family: 'Poppins', 'Inter', system-ui, sans-serif; letter-spacing: -0.01em; }
+  .eyebrow { font-size: 11.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue); }
+  .btn-label { font-family: 'Poppins', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; font-size: 13px; }
+  .section-anchor { scroll-margin-top: 76px; }
+  .card { background: #FFFFFF; border: 1px solid var(--border); border-radius: 18px; box-shadow: var(--shadow); }
+  .card-flat { background: #FFFFFF; border: 1px solid var(--border); border-radius: 18px; }
+  .card-signature { background: linear-gradient(120deg, #14284B 0%, #1E56C6 55%, #3DBFA0 100%); border-radius: 18px; color: white; box-shadow: 0 14px 34px -14px rgba(20,86,150,0.5); }
+  .card-mint { background: linear-gradient(160deg, #E4F8F0 0%, #DCEEFB 100%); border: 1px solid var(--border); border-radius: 18px; }
+  .card-tint { background: var(--bg-tint); border: 1px solid var(--border); border-radius: 18px; }
+  .rule { height: 1px; background: var(--border); }
+  .nav-link { font-size: 13.5px; color: var(--body); padding: 6px 14px; border-radius: 999px; transition: all 0.15s; text-decoration: none; font-weight: 500; }
+  .nav-link:hover { background: var(--bg-tint); color: var(--navy); }
+  .nav-shell { border: 1.5px solid var(--border); border-radius: 999px; }
+  .hero-glow { position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse 900px 520px at 88% -8%, rgba(30,86,198,0.10), transparent 58%),
+      radial-gradient(ellipse 700px 420px at 4% 96%, rgba(61,191,160,0.10), transparent 60%); }
+  .pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 13px; border-radius: 999px; font-size: 11.5px; font-weight: 700; letter-spacing: 0.02em; }
+  .pill-blue { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); }
+  .pill-teal { background: rgba(61,191,160,0.10); color: #1D8F72; border: 1px solid rgba(61,191,160,0.32); }
+  .pill-dim { background: #F1F3F9; color: var(--dim); border: 1px solid var(--border); }
+  .badge { display: inline-flex; align-items: center; gap: 6px; background: #F5F9FE; border: 1px solid var(--border); border-radius: 999px; padding: 6px 14px; font-size: 12.5px; font-weight: 600; color: var(--navy); }
+  .quote-mark { font-size: 56px; line-height: 0.6; color: var(--cyan); font-weight: 800; }
+  .btn-cyan { background: var(--cyan); color: #0A1A2E; border-radius: 999px; padding: 13px 26px; text-decoration: none; display: inline-block; box-shadow: 0 10px 22px -8px rgba(41,171,226,0.55); }
+  .btn-outline { background: white; color: var(--navy); border: 1.5px solid var(--navy); border-radius: 999px; padding: 12px 26px; text-decoration: none; display: inline-block; }
+  .btn-navy { background: var(--navy); color: white; border-radius: 999px; padding: 13px 26px; text-decoration: none; display: inline-block; }
+  @media (max-width: 900px) { .split-row { grid-template-columns: 1fr !important; } }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState } = React;
+
+// ─── Data ──────────────────────────────────────────────────────────────
+
+const NAV = [
+  { id: 'reference',   label: 'The reference' },
+  { id: 'thesis',      label: 'The real question' },
+  { id: 'maturity',    label: 'Is Spara proven?' },
+  { id: 'diverge',     label: 'Where they diverge' },
+  { id: 'turnkey',     label: 'Implementation' },
+  { id: 'roi',         label: 'The ROI' },
+  { id: 'proof',       label: 'Proven at scale' },
+];
+
+const HERO_STATS = [
+  { v: '$183K–$679K', k: 'Incremental annual pipeline — conversion lift + SDR (directional)' },
+  { v: '1,504 vs 12', k: 'G2 reviews — Qualified vs. Spara' },
+  { v: '2018 vs 2023', k: 'Founded — six years in market vs. two' },
+  { v: '1', k: 'PSG portfolio company that ran this exact evaluation — reference being arranged' },
+];
+
+const REASONS = [
+  { t: 'Real-time, CRM-driven routing', d: 'Qualified visitors get routed the moment they engage — matched to account ownership and territory rules already in Salesforce, not queued for a rep to sort out later.' },
+  { t: 'Attribution preservation end to end', d: 'Every engagement, qualification response, and meeting booked writes back into the Salesforce record it came from, so the pipeline it creates never becomes a separate, disconnected system.' },
+  { t: 'Overall workflow depth', d: 'The evaluation compared the full path — identification, engagement, qualification, routing, scheduling, follow-up — not just the conversational layer. Qualified covered more of that path end to end.' },
+];
+
+const MATURITY_ROWS = [
+  ['Founded', '2018', '2023'],
+  ['Headquarters', 'San Francisco, CA', 'London, UK'],
+  ['Team size', '~300 employees', '~22 employees'],
+  ['G2 reviews', '1,504', '12'],
+  ['G2 rating', '4.9 / 5.0', '4.8 / 5.0'],
+];
+
+const DIVERGE_ROWS = [
+  {
+    cat: 'Salesforce integration',
+    q: 'Runs on Qualified’s own Salesforce engine — built, per Qualified, for hundreds of thousands of real-world Salesforce configurations. Qualification and routing reference live CRM ownership and territory data in real time.',
+    s: 'Captures visitor info during chat, syncs to CRM after the conversation ends.',
+    detail: ['Routing rules can mirror your existing round-robin and territory assignment logic — no second rule set to maintain.', 'Engagement data, qualification responses, and meeting outcomes write directly to Accounts, Contacts, Leads, and Opportunities.', 'Field labels and picklist values can mirror what your team already sees in Salesforce today.'],
+  },
+  {
+    cat: 'HubSpot integration',
+    q: 'Reads the HubSpot browser cookie directly to identify known campaign members and prioritize the most engaged visitors for a personalized experience — a native, documented integration.',
+    s: 'HubSpot isn’t mentioned anywhere in Spara’s own public documentation.',
+    detail: ['Visitors who arrive already tagged by a HubSpot campaign get recognized and prioritized automatically, not through a manual lookup.', 'Because it reads the same cookie HubSpot itself uses, there’s no separate tracking script or setup step beyond the native integration.'],
+  },
+  {
+    cat: 'Slack & real-time alerts',
+    q: 'Piper pushes real-time notifications straight into Slack, and your team can hold two-way conversations with Piper from inside Slack — plus Microsoft Teams, Chrome browser, and Gmail as additional named alert channels.',
+    s: 'Spara’s docs say the platform “can notify” your sales team of urgent buying intent, but don’t specify how — no named channel (Slack, Teams, or otherwise) is documented anywhere public.',
+    detail: ['Four distinct, named real-time channels (Slack, Microsoft Teams, Chrome browser alerts, Gmail) vs. an unspecified “we’ll notify you” claim.', 'Reps can act on a Slack alert without opening Salesforce or the site — the alert carries the visitor context with it.'],
+  },
+  {
+    cat: 'Sales engagement (Gong, Outreach, Salesloft)',
+    q: 'Piper greets visitors who click through a Gong Engage, Outreach, or Salesloft email with a custom message referencing that exact sequence — the same “one-two punch” play demoed live on your 7/14 call.',
+    s: 'Gong appears on Spara’s own site only as a company that uses Spara as a customer — not as a documented sales-engagement integration. Outreach and Salesloft aren’t mentioned at all.',
+    detail: ['This isn’t a hypothetical capability — Josh showed this exact play live on the 7/14 call.', 'Conversation and engagement data can push back into the Outreach Activity Feed or alert the original Salesloft sender, keeping the outbound and inbound motions in sync.'],
+  },
+  {
+    cat: 'Account identification & intent data',
+    q: 'Combines reverse-IP identification with five named data partners — Clearbit, ZoomInfo, Bombora, 6sense, and Demandbase — to identify and prioritize accounts before a conversation starts.',
+    s: 'Gathers company and contact context during the chat itself — no named third-party enrichment or intent-data partner is documented.',
+    detail: ['Known target accounts can be routed to a dedicated rep automatically the moment they land on the site, before they’ve typed a word.', 'Accounts already in active research mode (per Bombora’s 5,000+ source intent network) can be prioritized ahead of general traffic.'],
+  },
+  {
+    cat: 'Multi-domain management',
+    q: 'Centralized qualification and routing logic across every domain, with reporting rolling up to one place.',
+    s: 'Chat agents are deployed per-site via embedded scripts — each site is effectively its own setup.',
+    detail: ['One set of qualification and routing rules, applied consistently whether a visitor lands on your primary site or a regional or product-specific domain.', 'Reporting rolls up centrally instead of requiring a separate view per property.'],
+  },
+];
+
+const IMPL_Q = [
+  'Named implementation partner — a Qualified Success Architect, not a support ticket queue',
+  '~3 hours/week of hands-on partnership through go-live and beyond',
+  'A structured onboarding process, not a self-taught one',
+  'Built for teams without in-house AI/ML engineering to lean on',
+];
+const IMPL_S = [
+  'Per Spara’s own documentation: the agent trains from your website and sales materials',
+  'No named dedicated implementation role described publicly',
+  'A 22-person company supporting every customer’s onboarding at once',
+  'May be perfectly fine for a narrow chat use case — worth asking directly how it’s staffed',
+];
+
+const QSA_PROCESS = [
+  { phase: 'Kickoff', detail: 'A named Qualified Success Architect is assigned — the same person through go-live, not a rotating queue.' },
+  { phase: 'Configuration', detail: 'Routing rules, qualification logic, and Salesforce field mapping get built around your actual GTM process, not a generic template.' },
+  { phase: 'Parallel testing', detail: 'Runs alongside your current process before full cutover — nothing goes live untested.' },
+  { phase: 'Go-live & beyond', detail: 'Ongoing time with your Success Architect, not a support ticket queue, once you\'re live.' },
+];
+
+const PROOF_STATS = [
+  { name: 'Demandbase', initial: 'D', stat: '2X', label: 'increase in pipeline & meetings booked', quote: '“Piper works perfectly with our ABM approach.”', person: 'Director of Digital Marketing' },
+  { name: 'Sendoso', initial: 'S', stat: '$5M', label: 'pipeline influenced in the last 12 months', quote: '“We hired Piper to scale our inbound pipe gen efforts.”', person: 'Head of Growth & Customer Marketing' },
+  { name: 'Outreach', initial: 'O', stat: '$1.1M', label: 'pipeline sourced in the first 4 months', quote: '“We have 150 AEs who need pipeline — Piper accelerated our pipe gen.”', person: 'Digital Marketing Lead' },
+  { name: 'Cin7', initial: 'C', stat: '81%', label: 'meeting-booking conversion rate', quote: '“Piper handles engagement so our sales team can focus.”', person: 'Sr. Director, Marketing Ops', note: 'The same Cin7 reference from the bake-off above.' },
+  { name: 'Gamma', initial: 'G', stat: '$525K', label: 'saved in annual headcount costs', quote: '“Piper has increased leads and meetings booked by 2X. She’s incredible!”', person: 'Head of Marketing' },
+  { name: 'Greenhouse', initial: 'G', stat: '$27M', label: 'pipeline influenced', quote: '“We can’t expect the sales team to be on the website 24/7.”', person: 'Sr. Growth Marketing Manager' },
+];
+
+const TRUSTED_BY = ['Box', 'Twilio', 'GitLab', 'Cloudflare', 'Asana', 'Greenhouse', 'Outreach', 'Gong', 'SentinelOne', 'Demandbase', 'Adecco', 'ClickUp'];
+
+const ROI_ROWS = [
+  { label: 'Sessions', cur: ['58,000', 'self-reported'], con: ['58,000', 'self-reported, flat'], strong: ['75,550', 'growth projection'] },
+  { label: 'Leads', cur: ['290', '0.50% (benchmark)'], con: ['305', '0.53% (Qualified)'], strong: ['416', '0.55% (Qualified)'] },
+  { label: 'Meetings', cur: ['23', '20% (benchmark)'], con: ['27', '22.5% (Qualified)'], strong: ['42', '25% (Qualified)'] },
+  { label: 'Revenue / mo', cur: ['$61,248', 'ASP $24,000, 20% win rate (Athos data)'], con: ['$72,468', 'ASP $24,000, 20% win rate (Athos data)'], strong: ['$109,824', 'ASP $24,000, 20% win rate (Athos data)'] },
+];
+
+const NEEDS = ['Actual monthly lead volume today', 'Actual lead → meeting conversion rate'];
+
+const CONFIRMED = [
+  { label: 'Monthly sessions', value: '58,000' },
+  { label: 'Average deal size', value: '$24,000' },
+  { label: 'Win rate', value: '20%' },
+  { label: 'FTE on website leads', value: '2' },
+  { label: 'Pipeline per outbound rep', value: '$240K / yr' },
+];
+
+const TIES = [
+  { t: 'Convert 58K sessions into qualified pipeline', s: 'The CRM-driven routing gap is exactly where that traffic leaks today.' },
+  { t: 'Scale into APAC & EMEA without added headcount', s: 'Centralized multi-domain logic vs. Spara’s per-site scripts is the same question.' },
+  { t: 'Prove the ROI before committing capital', s: 'That’s the section above — directional today, built to tighten with your real numbers.' },
+];
+
+// ─── Athos-inspired mark: a 2×2 grid of rounded squares in their two blues,
+// echoing the real logo's composition — not a reproduction of their trademarked file ─
+
+function AthosMark({ size = 26 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 40 40" fill="none">
+      <rect x="2" y="2" width="16" height="16" rx="6" fill="#14284B" />
+      <rect x="22" y="2" width="16" height="16" rx="6" fill="#29ABE2" />
+      <rect x="2" y="22" width="16" height="16" rx="6" fill="#29ABE2" />
+      <rect x="22" y="22" width="16" height="16" rx="6" fill="#14284B" />
+    </svg>
+  );
+}
+
+// ─── Components ────────────────────────────────────────────────────────
+
+function Expandable({ label, children }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div>
+      <button onClick={() => setOpen(!open)} style={{display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'none', border: 'none', cursor: 'pointer', padding: 0, color: 'var(--blue)', fontSize: '13.5px', fontWeight: 700}}>
+        <span style={{display: 'inline-flex', width: 18, height: 18, borderRadius: '50%', border: '1.5px solid var(--blue)', alignItems: 'center', justifyContent: 'center', fontSize: '12px', flexShrink: 0, transform: open ? 'rotate(45deg)' : 'none', transition: 'transform 0.2s'}}>+</span>
+        {open ? 'Show less' : label}
+      </button>
+      {open && <div style={{marginTop: '16px'}}>{children}</div>}
+    </div>
+  );
+}
+
+function SectionHead({ eyebrow, title, accent, body, width }) {
+  return (
+    <div style={{maxWidth: width || '680px', marginBottom: '48px'}}>
+      <p className="eyebrow" style={{marginBottom: '14px'}}>{eyebrow}</p>
+      <h2 className="display font-bold" style={{fontSize: 'clamp(28px, 3.4vw, 42px)', color: 'var(--navy)', marginBottom: '16px', lineHeight: '1.18'}}>
+        {title} {accent && <span style={{color: 'var(--blue)'}}>{accent}</span>}
+      </h2>
+      {body && <p style={{color: 'var(--body)', lineHeight: '1.7', fontSize: '15.5px'}}>{body}</p>}
+    </div>
+  );
+}
+
+function Header() {
+  return (
+    <header className="sticky top-0 z-50" style={{background: 'rgba(255,255,255,0.94)', backdropFilter: 'blur(14px)', borderBottom: '1px solid var(--border)'}}>
+      <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <AthosMark size={26} />
+          <div style={{lineHeight: '1.05'}}>
+            <div className="display font-extrabold" style={{fontSize: '15px', color: 'var(--navy)'}}>athos</div>
+            <div className="display font-semibold" style={{fontSize: '11px', color: 'var(--blue)', letterSpacing: '0.02em'}}>commerce</div>
+          </div>
+          <span style={{color: 'var(--border)', fontSize: '16px', margin: '0 2px'}}>×</span>
+          <span className="font-medium" style={{fontSize: '13px', color: 'var(--dim)'}}>Qualified, from Salesforce</span>
+        </div>
+        <nav className="hidden lg:flex items-center gap-0.5 nav-shell" style={{padding: '3px'}}>
+          {NAV.map(n => <a key={n.id} href={`#${n.id}`} className="nav-link">{n.label}</a>)}
+        </nav>
+        <div style={{fontSize: '12px', color: 'var(--dim)', fontWeight: 500}}>For Athos Commerce</div>
+      </div>
+    </header>
+  );
+}
+
+function Hero() {
+  return (
+    <section style={{background: 'var(--bg)', position: 'relative', overflow: 'hidden'}}>
+      <div className="hero-glow"></div>
+      <div className="relative max-w-7xl mx-auto px-6 pt-24 pb-16">
+        <div className="badge" style={{marginBottom: '30px'}}>
+          <span style={{width: 6, height: 6, borderRadius: 2, background: 'var(--teal)', display: 'inline-block'}}></span>
+          On the Spara question — a direct answer, not a battlecard
+        </div>
+        <h1 className="display font-extrabold" style={{fontSize: 'clamp(36px, 5vw, 58px)', color: 'var(--navy)', maxWidth: '900px', marginBottom: '24px', lineHeight: '1.14'}}>
+          $20K is a price. $85K is a price.
+          <br />
+          <span style={{color: 'var(--blue)'}}>Neither is the number that matters.</span>
+        </h1>
+        <p style={{fontSize: '17.5px', lineHeight: '1.65', color: 'var(--body)', maxWidth: '640px', marginBottom: '40px'}}>
+          A cheaper tool that returns less isn't a deal — it's a worse investment, priced to look like a good one. Here's the whole picture: a live reference you can call yourself, an honest look at how proven each vendor actually is, and where the two platforms genuinely diverge.
+        </p>
+        <div style={{display: 'flex', gap: '12px', flexWrap: 'wrap'}}>
+          <a href="#reference" className="btn-cyan btn-label">START WITH THE REFERENCE →</a>
+          <a href="#roi" className="btn-outline btn-label">JUMP TO THE ROI</a>
+        </div>
+      </div>
+      <div className="max-w-7xl mx-auto px-6 pb-16">
+        <div className="rule" style={{marginBottom: '28px'}}></div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          {HERO_STATS.map((s, i) => (
+            <div key={i}>
+              <p className="display font-bold" style={{fontSize: '25px', color: 'var(--navy)', marginBottom: '6px'}}>{s.v}</p>
+              <p style={{fontSize: '12.5px', color: 'var(--dim)', lineHeight: '1.5'}}>{s.k}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Reference() {
+  return (
+    <section id="reference" className="section-anchor" style={{background: 'var(--bg-tint)', padding: '96px 0'}}>
+      <div className="max-w-7xl mx-auto px-6">
+        <SectionHead eyebrow="NOT A CASE STUDY — A PHONE CALL" title="Another PSG company already ran this exact bake-off." accent="They'll tell you themselves." width="760px" />
+        <div className="grid lg:grid-cols-12 gap-10">
+          <div className="lg:col-span-7">
+            <div className="card" style={{padding: '32px'}}>
+              <p style={{fontSize: '16px', color: 'var(--navy)', lineHeight: '1.7', marginBottom: '20px'}}>
+                A portfolio company under the same private equity ownership as Athos ran a head-to-head evaluation — Qualified vs. Spara.
+              </p>
+              <div className="card-mint" style={{padding: '18px 22px', marginBottom: '24px'}}>
+                <p style={{fontSize: '15px', color: 'var(--navy)', fontWeight: 700, lineHeight: '1.5'}}>
+                  They signed the same size contract Athos is being offered — for a longer term, not a shorter one.
+                </p>
+              </div>
+              <p style={{fontSize: '15px', color: 'var(--body)', lineHeight: '1.7', marginBottom: '24px'}}>
+                It wasn't a rubber stamp: deep technical discovery, multiple hands-on workshops, and a direct customer reference call before the decision was made.
+              </p>
+              <div className="rule" style={{marginBottom: '24px'}}></div>
+              <p className="eyebrow" style={{color: '#1D8F72', marginBottom: '16px'}}>What actually won the deal</p>
+              <div style={{display: 'flex', flexDirection: 'column', gap: '4px', marginBottom: '20px'}}>
+                {REASONS.map((r, i) => (
+                  <div key={i} style={{display: 'flex', gap: '12px', alignItems: 'flex-start', padding: '10px 0'}}>
+                    <span style={{color: 'var(--teal)', fontWeight: 700, flexShrink: 0}}>→</span>
+                    <span style={{fontSize: '15px', color: 'var(--navy)', fontWeight: 700}}>{r.t}</span>
+                  </div>
+                ))}
+              </div>
+              <Expandable label="Go deeper on what won this deal">
+                <div style={{display: 'flex', flexDirection: 'column', gap: '14px'}}>
+                  {REASONS.map((r, i) => (
+                    <div key={i} className="card-tint" style={{padding: '16px 18px'}}>
+                      <p style={{fontSize: '13.5px', fontWeight: 700, color: 'var(--navy)', marginBottom: '4px'}}>{r.t}</p>
+                      <p style={{fontSize: '13px', color: 'var(--body)', lineHeight: '1.6'}}>{r.d}</p>
+                    </div>
+                  ))}
+                </div>
+              </Expandable>
+            </div>
+          </div>
+          <div className="lg:col-span-5">
+            <div className="card-signature" style={{padding: '32px', height: '100%', display: 'flex', flexDirection: 'column'}}>
+              <p className="eyebrow" style={{color: 'rgba(255,255,255,0.75)', marginBottom: '14px'}}>We're not asking you to trust a slide</p>
+              <p style={{fontSize: '20px', fontWeight: 800, color: 'white', lineHeight: '1.4', marginBottom: '16px'}}>
+                We're working to connect you directly with the team that made this call.
+              </p>
+              <p style={{fontSize: '14.5px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.65', marginBottom: '24px', flex: 1}}>
+                The signals from their team are good — we expect to have someone available to speak with you. Same competitor, same size contract, longer term. Ask your Salesforce or Qualified team and we'll move it forward.
+              </p>
+              <a href="#" className="btn-label" style={{background: 'white', color: 'var(--navy)', padding: '13px 20px', borderRadius: '12px', textAlign: 'center', textDecoration: 'none'}}>
+                ASK YOUR SALESFORCE / QUALIFIED TEAM
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Thesis() {
+  return (
+    <section id="thesis" className="section-anchor" style={{background: 'var(--bg)', padding: '96px 0'}}>
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="grid lg:grid-cols-12 gap-12 items-center">
+          <div className="lg:col-span-7">
+            <p className="eyebrow" style={{marginBottom: '14px'}}>THE REAL QUESTION</p>
+            <h2 className="display font-extrabold" style={{fontSize: 'clamp(26px, 3.2vw, 38px)', color: 'var(--navy)', marginBottom: '18px', lineHeight: '1.25'}}>
+              Price answers a question nobody's actually asking.
+            </h2>
+            <p style={{color: 'var(--body)', lineHeight: '1.75', fontSize: '15.5px', marginBottom: '16px'}}>
+              The question that matters isn't which tool costs less — it's which investment actually converts your traffic into pipeline. A $20K tool that returns $40K is a worse deal than an $85K tool that returns $500K, even though the sticker price says otherwise.
+            </p>
+            <p style={{color: 'var(--body)', lineHeight: '1.75', fontSize: '15.5px'}}>
+              No one's put a real number on what $20K actually returns yet. That's the comparison we think should be driving this decision — so that's what the rest of this walks through.
+            </p>
+          </div>
+          <div className="lg:col-span-5">
+            <div className="card-tint" style={{padding: '30px'}}>
+              <p className="quote-mark">"</p>
+              <p style={{fontSize: '17px', color: 'var(--navy)', fontWeight: 700, lineHeight: '1.5', marginTop: '-8px'}}>
+                Cutting costs is great, but I'm more interested in solutions with ROI — that pay for themselves.
+              </p>
+              <p style={{fontSize: '12px', color: 'var(--dim)', marginTop: '16px', letterSpacing: '0.04em', fontWeight: 600}}>— CHUCK HALING, CEO, ATHOS COMMERCE</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Maturity() {
+  return (
+    <section id="maturity" className="section-anchor" style={{background: 'var(--bg-tint)', padding: '96px 0'}}>
+      <div className="max-w-7xl mx-auto px-6">
+        <SectionHead eyebrow="SAID PLAINLY, VERIFIED INDEPENDENTLY" title="Is Spara actually proven —" accent="or just promising?" width="700px" body="Every number below is independently verifiable on G2, not a sales deck." />
+
+        <div className="grid lg:grid-cols-12 gap-10">
+          <div className="lg:col-span-6">
+            <div className="card" style={{padding: '0', overflow: 'hidden'}}>
+              <div style={{display: 'grid', gridTemplateColumns: '1.3fr 1fr 1fr', padding: '16px 24px', background: 'var(--bg-tint)', borderBottom: '1px solid var(--border)'}}>
+                <span className="eyebrow" style={{color: 'var(--dim)'}}>CATEGORY</span>
+                <span className="eyebrow" style={{textAlign: 'center'}}>QUALIFIED</span>
+                <span className="eyebrow" style={{color: 'var(--dim)', textAlign: 'center'}}>SPARA</span>
+              </div>
+              {MATURITY_ROWS.map((r, i) => (
+                <div key={i} style={{display: 'grid', gridTemplateColumns: '1.3fr 1fr 1fr', padding: '16px 24px', borderBottom: i < MATURITY_ROWS.length - 1 ? '1px solid var(--border)' : 'none'}}>
+                  <span style={{fontSize: '14px', color: 'var(--navy)', fontWeight: 700}}>{r[0]}</span>
+                  <span style={{fontSize: '14px', color: 'var(--blue)', textAlign: 'center', fontWeight: 700}}>{r[1]}</span>
+                  <span style={{fontSize: '14px', color: 'var(--dim)', textAlign: 'center', fontWeight: 600}}>{r[2]}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="lg:col-span-6">
+            <div className="card" style={{padding: '30px', marginBottom: '16px'}}>
+              <p className="eyebrow" style={{color: 'var(--dim)', marginBottom: '16px'}}>FROM SPARA'S OWN G2 REVIEWS</p>
+              <p style={{fontSize: '19px', fontWeight: 800, color: 'var(--navy)', lineHeight: '1.5', marginBottom: '14px'}}>
+                "...in the 50 days since launch..." · "It's still early days."
+              </p>
+              <p style={{fontSize: '13.5px', color: 'var(--body)', lineHeight: '1.65'}}>
+                One reviewer noted they couldn't self-edit their agentic workflow and had to rely on the Spara team directly — a limitation later addressed by a product update.
+              </p>
+            </div>
+            <div className="card-flat" style={{padding: '24px', borderColor: 'var(--blue-border)'}}>
+              <p style={{fontSize: '15px', fontWeight: 700, color: 'var(--navy)', lineHeight: '1.5'}}>
+                A 4.8 rating on 12 reviews and a 4.9 rating on 1,500+ aren't the same claim. One is a track record. The other is a promising start.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Diverge() {
+  return (
+    <section id="diverge" className="section-anchor" style={{background: 'var(--bg)', padding: '96px 0'}}>
+      <div className="max-w-7xl mx-auto px-6">
+        <SectionHead eyebrow="SOURCED, NOT ASSERTED" title="The gap is in the infrastructure —" accent="not the chat window." width="700px" body="Pulled from each vendor's own public integrations pages and documentation — not asserted, and checkable yourself." />
+
+        <div style={{display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '20px'}}>
+          <div style={{display: 'grid', gridTemplateColumns: '1fr 1.4fr 1.4fr', gap: '16px', padding: '0 4px'}}>
+            <span></span>
+            <span className="eyebrow">QUALIFIED</span>
+            <span className="eyebrow" style={{color: 'var(--dim)'}}>SPARA</span>
+          </div>
+          {DIVERGE_ROWS.map((r, i) => (
+            <div key={i} className="card" style={{display: 'grid', gridTemplateColumns: '1fr 1.4fr 1.4fr', gap: '16px', padding: '22px 24px', alignItems: 'center'}}>
+              <span style={{fontSize: '14.5px', fontWeight: 700, color: 'var(--navy)'}}>{r.cat}</span>
+              <span style={{fontSize: '13.5px', color: 'var(--body)', lineHeight: '1.55'}}>{r.q}</span>
+              <span style={{fontSize: '13.5px', color: 'var(--dim)', lineHeight: '1.55'}}>{r.s}</span>
+            </div>
+          ))}
+        </div>
+
+        <div className="card-tint" style={{padding: '22px 26px', marginBottom: '24px'}}>
+          <span style={{fontSize: '14px', color: 'var(--navy)', fontWeight: 700}}>Said plainly, not hidden: </span>
+          <span style={{fontSize: '14px', color: 'var(--body)'}}>Spara markets itself as "model agnostic" — not locked to one underlying AI provider. Qualified runs on OpenAI specifically. That's a real, fair point in Spara's favor.</span>
+        </div>
+
+        <Expandable label="Go deeper on how the integration actually works">
+          <div className="grid md:grid-cols-2 gap-4">
+            {DIVERGE_ROWS.map((r, i) => (
+              <div key={i} className="card" style={{padding: '20px 22px'}}>
+                <p style={{fontSize: '13.5px', fontWeight: 700, color: 'var(--navy)', marginBottom: '10px'}}>{r.cat}</p>
+                <div style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
+                  {r.detail.map((d, j) => (
+                    <div key={j} style={{display: 'flex', gap: '8px'}}>
+                      <span style={{color: 'var(--blue)', flexShrink: 0}}>→</span>
+                      <span style={{fontSize: '12.5px', color: 'var(--body)', lineHeight: '1.55'}}>{d}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </Expandable>
+      </div>
+    </section>
+  );
+}
+
+function Turnkey() {
+  return (
+    <section id="turnkey" className="section-anchor" style={{background: 'var(--bg-tint)', padding: '96px 0'}}>
+      <div className="max-w-7xl mx-auto px-6">
+        <SectionHead eyebrow="WHO'S ACTUALLY STANDING BEHIND THIS" title="Turnkey," accent="not DIY." width="640px" body="The less proven the vendor, the more the implementation model matters — it's your safety net if the product doesn't fit your workflow on the first try." />
+
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="card" style={{padding: '30px', borderColor: 'var(--blue-border)'}}>
+            <p className="pill pill-blue" style={{marginBottom: '18px'}}>QUALIFIED</p>
+            <p style={{fontSize: '19px', fontWeight: 800, color: 'var(--navy)', marginBottom: '20px', lineHeight: '1.4'}}>A dedicated Qualified Success Architect</p>
+            <div style={{display: 'flex', flexDirection: 'column', gap: '14px'}}>
+              {IMPL_Q.map((b, i) => (
+                <div key={i} style={{display: 'flex', gap: '10px'}}>
+                  <span style={{color: 'var(--blue)', flexShrink: 0}}>→</span>
+                  <span style={{fontSize: '13.5px', color: 'var(--body)', lineHeight: '1.6'}}>{b}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="card" style={{padding: '30px'}}>
+            <p className="pill pill-dim" style={{marginBottom: '18px'}}>SPARA</p>
+            <p style={{fontSize: '19px', fontWeight: 800, color: 'var(--navy)', marginBottom: '20px', lineHeight: '1.4'}}>Self-serve onboarding</p>
+            <div style={{display: 'flex', flexDirection: 'column', gap: '14px'}}>
+              {IMPL_S.map((b, i) => (
+                <div key={i} style={{display: 'flex', gap: '10px'}}>
+                  <span style={{color: 'var(--dim)', flexShrink: 0}}>→</span>
+                  <span style={{fontSize: '13.5px', color: 'var(--dim)', lineHeight: '1.6'}}>{b}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div style={{marginTop: '28px'}}>
+          <Expandable label="See how the QSA process actually runs">
+            <div className="grid md:grid-cols-4 gap-4">
+              {QSA_PROCESS.map((s, i) => (
+                <div key={i} className="card" style={{padding: '20px'}}>
+                  <p className="eyebrow" style={{marginBottom: '10px'}}>{`0${i + 1}`}</p>
+                  <p style={{fontSize: '13.5px', fontWeight: 700, color: 'var(--navy)', marginBottom: '8px'}}>{s.phase}</p>
+                  <p style={{fontSize: '12.5px', color: 'var(--body)', lineHeight: '1.55'}}>{s.detail}</p>
+                </div>
+              ))}
+            </div>
+          </Expandable>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ROI() {
+  return (
+    <section id="roi" className="section-anchor" style={{background: 'var(--bg)', padding: '96px 0'}}>
+      <div className="max-w-7xl mx-auto px-6">
+        <p className="eyebrow" style={{marginBottom: '14px'}}>THE QUESTION PRICE ALONE CAN'T ANSWER</p>
+        <h2 className="display font-extrabold" style={{fontSize: 'clamp(28px, 3.4vw, 42px)', color: 'var(--navy)', marginBottom: '16px', maxWidth: '760px', lineHeight: '1.25'}}>
+          Here's what $85K returns — at average results and well below average.
+        </h2>
+        <p style={{fontSize: '16px', color: 'var(--body)', lineHeight: '1.65', maxWidth: '680px', marginBottom: '44px'}}>
+          The Typical Results scenario isn't an optimistic projection — it's what Qualified's average customer actually reports, based on their own metrics. The Below Average scenario assumes Athos significantly underperforms that average. Either way, the $85K investment returns comfortably. Both are built on Athos's own confirmed inputs.
+        </p>
+
+        {/* Two mechanisms in one shared frame */}
+        <div style={{background: 'var(--bg-tint)', borderRadius: '20px', border: '1px solid var(--border)', padding: '20px', marginBottom: '16px'}}>
+          <div style={{display: 'grid', gridTemplateColumns: '1fr 52px 1fr', gap: '12px', alignItems: 'center'}}>
+            <div className="card" style={{padding: '26px 28px'}}>
+              <span className="pill pill-blue" style={{marginBottom: '14px', display: 'inline-flex'}}>MECHANISM 1</span>
+              <p className="display" style={{fontSize: '17px', fontWeight: 700, color: 'var(--navy)', marginBottom: '8px'}}>Conversion lift</p>
+              <p style={{fontSize: '13px', color: 'var(--body)', lineHeight: '1.6', marginBottom: '18px'}}>More of Athos's existing 58K monthly sessions convert into pipeline — through real-time CRM-driven identification, routing, and AI engagement.</p>
+              <p className="display" style={{fontSize: '26px', fontWeight: 800, color: 'var(--blue)'}}>$135K – $583K <span style={{fontSize: '14px', fontWeight: 500, color: 'var(--dim)'}}>/ yr</span></p>
+            </div>
+            <div style={{textAlign: 'center'}}>
+              <p className="display" style={{fontSize: '36px', fontWeight: 800, color: 'var(--dim)', lineHeight: 1}}>+</p>
+            </div>
+            <div className="card" style={{padding: '26px 28px'}}>
+              <span className="pill pill-teal" style={{marginBottom: '14px', display: 'inline-flex'}}>MECHANISM 2</span>
+              <p className="display" style={{fontSize: '17px', fontWeight: 700, color: 'var(--navy)', marginBottom: '8px'}}>SDR time repurposed</p>
+              <p style={{fontSize: '13px', color: 'var(--body)', lineHeight: '1.6', marginBottom: '18px'}}>2 FTE currently working website leads manually freed for outbound — at Athos's own $240K/rep pipeline rate and confirmed 20% win rate.</p>
+              <p className="display" style={{fontSize: '26px', fontWeight: 800, color: '#1D8F72'}}>$48K – $96K <span style={{fontSize: '14px', fontWeight: 500, color: 'var(--dim)'}}>/ yr</span></p>
+            </div>
+          </div>
+        </div>
+
+        {/* = Combined */}
+        <div style={{display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px', paddingLeft: '4px'}}>
+          <span className="display" style={{fontSize: '28px', fontWeight: 800, color: 'var(--blue)'}}>= </span>
+          <p className="eyebrow">COMBINED RETURN</p>
+        </div>
+        <div className="grid md:grid-cols-2 gap-6" style={{marginBottom: '16px'}}>
+          <div className="card-mint" style={{padding: '28px 30px', textAlign: 'center'}}>
+            <p className="eyebrow" style={{marginBottom: '10px'}}>BELOW AVERAGE</p>
+            <p className="display font-extrabold" style={{fontSize: '42px', color: 'var(--blue)'}}>$183K</p>
+            <p style={{fontSize: '13px', color: 'var(--body)', marginTop: '8px', fontWeight: 600}}>2.2x return on the $85K investment</p>
+            <p style={{fontSize: '11.5px', color: 'var(--dim)', marginTop: '6px'}}>$135K conversion lift + $48K SDR repurposing</p>
+          </div>
+          <div className="card-signature" style={{padding: '28px 30px', textAlign: 'center'}}>
+            <p className="eyebrow" style={{color: 'rgba(255,255,255,0.75)', marginBottom: '10px'}}>TYPICAL RESULTS</p>
+            <p className="display font-extrabold" style={{fontSize: '42px', color: 'white'}}>$679K</p>
+            <p style={{fontSize: '13px', color: 'rgba(255,255,255,0.8)', marginTop: '8px', fontWeight: 600}}>8.0x return on the $85K investment</p>
+            <p style={{fontSize: '11.5px', color: 'rgba(255,255,255,0.60)', marginTop: '6px'}}>$583K conversion lift + $96K SDR repurposing</p>
+          </div>
+        </div>
+
+        {/* Directional callout */}
+        <div className="card-tint" style={{padding: '22px 26px', marginBottom: '28px'}}>
+          <p className="eyebrow" style={{marginBottom: '8px'}}>DIRECTIONAL MODEL — NOT A FINAL NUMBER</p>
+          <p style={{fontSize: '14px', color: 'var(--body)', lineHeight: '1.65'}}>
+            Built on confirmed Athos inputs: 58,000 monthly sessions, $24,000 ASP, 20% win rate, 2 FTE on website leads, $240K pipeline per outbound rep. Conversion rates are still industry benchmarks — your real funnel data tightens the range. Both mechanisms are independent; either alone justifies the investment.
+          </p>
+        </div>
+
+        {/* Single expandable: full math for both components */}
+        <Expandable label="Show the full math behind both components">
+          <div className="grid lg:grid-cols-12 gap-10" style={{marginTop: '8px'}}>
+            <div className="lg:col-span-7">
+              <p className="eyebrow" style={{color: 'var(--dim)', marginBottom: '14px'}}>MECHANISM 1 — CONVERSION LIFT</p>
+              <div style={{display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '28px'}}>
+                <div style={{display: 'grid', gridTemplateColumns: '1.2fr 1fr 1fr 1fr', gap: '10px', padding: '0 4px'}}>
+                  <span></span>
+                  <span className="eyebrow" style={{fontSize: '10px', color: 'var(--dim)'}}>CURRENT</span>
+                  <span className="eyebrow" style={{fontSize: '10px'}}>BELOW AVERAGE</span>
+                  <span className="eyebrow" style={{fontSize: '10px', color: '#1D8F72'}}>TYPICAL RESULTS</span>
+                </div>
+                {ROI_ROWS.map((r, i) => (
+                  <div key={i} className="card" style={{display: 'grid', gridTemplateColumns: '1.2fr 1fr 1fr 1fr', gap: '10px', padding: '14px 16px', alignItems: 'center'}}>
+                    <span style={{fontSize: '13px', fontWeight: 700, color: 'var(--navy)'}}>{r.label}</span>
+                    {[r.cur, r.con, r.strong].map((c, j) => (
+                      <div key={j}>
+                        <p style={{fontSize: '13px', color: j === 0 ? 'var(--dim)' : j === 1 ? 'var(--blue)' : '#1D8F72', fontWeight: 700}}>{c[0]}</p>
+                        <p style={{fontSize: '9.5px', color: 'var(--dim)', marginTop: '2px'}}>{c[1]}</p>
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+              <p className="eyebrow" style={{color: 'var(--dim)', marginBottom: '14px'}}>MECHANISM 2 — SDR REPURPOSING</p>
+              <div style={{display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '10px'}}>
+                <div style={{display: 'grid', gridTemplateColumns: '1.2fr 1fr 1fr', gap: '10px', padding: '0 4px'}}>
+                  <span></span>
+                  <span className="eyebrow" style={{fontSize: '10px'}}>BELOW AVERAGE</span>
+                  <span className="eyebrow" style={{fontSize: '10px', color: '#1D8F72'}}>TYPICAL RESULTS</span>
+                </div>
+                {[
+                  { label: 'FTE repurposed', con: '1', strong: '2', conNote: '50% reinvestment', strongNote: '100% reinvestment' },
+                  { label: 'Pipeline generated', con: '$240K', strong: '$480K', conNote: 'Athos data', strongNote: 'Athos data' },
+                  { label: 'Revenue / yr', con: '+$48K', strong: '+$96K', conNote: 'at 20% win rate', strongNote: 'at 20% win rate' },
+                ].map((r, i) => (
+                  <div key={i} className="card" style={{display: 'grid', gridTemplateColumns: '1.2fr 1fr 1fr', gap: '10px', padding: '14px 16px', alignItems: 'center'}}>
+                    <span style={{fontSize: '13px', fontWeight: 700, color: 'var(--navy)'}}>{r.label}</span>
+                    <div>
+                      <p style={{fontSize: '13px', color: 'var(--blue)', fontWeight: 700}}>{r.con}</p>
+                      <p style={{fontSize: '9.5px', color: 'var(--dim)', marginTop: '2px'}}>{r.conNote}</p>
+                    </div>
+                    <div>
+                      <p style={{fontSize: '13px', color: '#1D8F72', fontWeight: 700}}>{r.strong}</p>
+                      <p style={{fontSize: '9.5px', color: 'var(--dim)', marginTop: '2px'}}>{r.strongNote}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="card-tint" style={{padding: '14px 18px'}}>
+                <p style={{fontSize: '12.5px', color: 'var(--body)', lineHeight: '1.55'}}>
+                  <strong style={{color: 'var(--navy)'}}>Assumption flagged:</strong> models freed rep time reinvested at Athos's $240K/rep rate. Below Average = 1 FTE (50% reinvestment). Typical Results = 2 FTE (100%). No headcount reduction assumed.
+                </p>
+              </div>
+            </div>
+            <div className="lg:col-span-5" style={{display: 'flex', flexDirection: 'column', gap: '14px'}}>
+              <div className="card-tint" style={{padding: '22px 24px'}}>
+                <p className="eyebrow" style={{color: '#1D8F72', marginBottom: '14px'}}>CONFIRMED FROM ATHOS</p>
+                <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
+                  {CONFIRMED.map((c, i) => (
+                    <div key={i} style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                      <span style={{fontSize: '13px', color: 'var(--body)'}}>{c.label}</span>
+                      <span style={{fontSize: '13px', color: 'var(--navy)', fontWeight: 700}}>{c.value}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="card" style={{padding: '22px 24px', borderColor: 'var(--blue-border)'}}>
+                <p className="eyebrow" style={{marginBottom: '14px'}}>STILL NEEDED TO TIGHTEN</p>
+                <div style={{display: 'flex', flexDirection: 'column', gap: '12px'}}>
+                  {NEEDS.map((n, i) => (
+                    <div key={i} style={{display: 'flex', gap: '10px'}}>
+                      <span style={{color: 'var(--blue)', flexShrink: 0}}>→</span>
+                      <span style={{fontSize: '13.5px', color: 'var(--navy)', fontWeight: 600}}>{n}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </Expandable>
+      </div>
+    </section>
+  );
+}
+
+function Proof() {
+  return (
+    <section id="proof" className="section-anchor" style={{background: 'var(--bg)', padding: '96px 0'}}>
+      <div className="max-w-7xl mx-auto px-6">
+        <SectionHead eyebrow="THIS ISN'T A ONE-OFF" title="Proven at scale," accent="not just in one bake-off." width="700px" body="A sample of real, named results — not projections." />
+
+        <div className="grid md:grid-cols-3 gap-5 mb-10">
+          {PROOF_STATS.map((p, i) => (
+            <div key={i} className="card" style={{padding: '26px'}}>
+              <div style={{display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '18px'}}>
+                <div style={{width: 34, height: 34, borderRadius: 10, background: 'var(--navy)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '15px', flexShrink: 0}}>{p.initial}</div>
+                <span style={{fontSize: '14px', fontWeight: 700, color: 'var(--navy)'}}>{p.name}</span>
+              </div>
+              <p className="display font-extrabold" style={{fontSize: '30px', color: 'var(--blue)', marginBottom: '2px'}}>{p.stat}</p>
+              <p style={{fontSize: '12.5px', color: 'var(--dim)', marginBottom: '16px'}}>{p.label}</p>
+              <p style={{fontSize: '13px', color: 'var(--body)', lineHeight: '1.55', fontStyle: 'italic', marginBottom: '8px'}}>{p.quote}</p>
+              <p style={{fontSize: '11.5px', color: 'var(--dim)'}}>{p.person}</p>
+              {p.note && <p style={{fontSize: '11.5px', color: '#1D8F72', fontWeight: 600, marginTop: '6px'}}>{p.note}</p>}
+            </div>
+          ))}
+        </div>
+
+        <div className="card-tint" style={{padding: '26px 30px'}}>
+          <p className="eyebrow" style={{marginBottom: '14px'}}>ALSO RUNNING PIPER</p>
+          <div style={{display: 'flex', flexWrap: 'wrap', gap: '10px'}}>
+            {TRUSTED_BY.map((n, i) => (
+              <span key={i} className="pill pill-dim">{n}</span>
+            ))}
+            <span className="pill pill-dim">+ 600 more</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Closing() {
+  return (
+    <section style={{background: 'var(--bg-tint)', padding: '96px 0'}}>
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="grid lg:grid-cols-12 gap-12 items-start">
+          <div className="lg:col-span-5">
+            <p className="eyebrow" style={{marginBottom: '14px'}}>BACK TO WHAT ATHOS ACTUALLY TOLD US</p>
+            <h2 className="display font-extrabold" style={{fontSize: 'clamp(26px, 3.2vw, 36px)', color: 'var(--navy)', marginBottom: '18px', lineHeight: '1.3'}}>
+              This was never really about $20K vs. $85K.
+            </h2>
+            <p style={{color: 'var(--body)', lineHeight: '1.7', fontSize: '15px'}}>
+              It's about which investment actually converts your traffic into pipeline — from a vendor built to still be improving it in three years.
+            </p>
+          </div>
+          <div className="lg:col-span-7">
+            <div style={{display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '20px'}}>
+              {TIES.map((t, i) => (
+                <div key={i} className="card" style={{padding: '20px 24px'}}>
+                  <p style={{fontSize: '14.5px', fontWeight: 700, color: 'var(--navy)', marginBottom: '4px'}}>{t.t}</p>
+                  <p style={{fontSize: '13px', color: 'var(--dim)'}}>{t.s}</p>
+                </div>
+              ))}
+            </div>
+            <div className="card-signature" style={{padding: '26px'}}>
+              <p className="eyebrow" style={{color: 'rgba(255,255,255,0.75)', marginBottom: '10px'}}>NEXT STEP</p>
+              <p style={{fontSize: '16px', fontWeight: 700, color: 'white', lineHeight: '1.5', marginBottom: '20px'}}>
+                A working session to drop your real funnel numbers into this model — and an introduction to the PSG team that ran this same evaluation. We're actively arranging it.
+              </p>
+              <a href="#" className="btn-label" style={{background: 'white', color: 'var(--navy)', padding: '13px 22px', borderRadius: '12px', textAlign: 'center', textDecoration: 'none', display: 'inline-block'}}>
+                LET'S GET THE REAL NUMBERS IN
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Footer() {
+  return (
+    <footer style={{background: 'white', borderTop: '1px solid var(--border)', padding: '40px 0'}}>
+      <div className="max-w-7xl mx-auto px-6" style={{display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '14px'}}>
+        <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
+          <AthosMark size={18} />
+          <span className="display font-bold" style={{fontSize: '13px', color: 'var(--dim)'}}>athos commerce</span>
+          <span style={{color: 'var(--border)'}}>×</span>
+          <span style={{fontSize: '13px', color: 'var(--dim)'}}>Qualified, from Salesforce</span>
+        </div>
+        <p style={{fontSize: '11px', color: 'var(--dim)'}}>Prepared July 2026</p>
+      </div>
+    </footer>
+  );
+}
+
+function App() {
+  return (
+    <div>
+      <Header />
+      <Hero />
+      <Reference />
+      <Thesis />
+      <Maturity />
+      <Diverge />
+      <Turnkey />
+      <ROI />
+      <Proof />
+      <Closing />
+      <Footer />
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
